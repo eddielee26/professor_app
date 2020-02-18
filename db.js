@@ -16,3 +16,15 @@ const getAllProfessors = (request, response) => {
   });
 };
 
+const addProfessor = (request, response) => {
+  const { name, title, school, department, difficulty } = request.body;
+
+  pool.query('INSERT INTO professors (name, title, school, department, difficulty)' + 'VALUES ($1, $2, $3, $4, $5) RETURNING id', [name, title, school, department, difficulty], (error, result) => {
+    if (error) {
+      throw error;
+    }
+    response.status(201).send(result.body);
+  });
+};
+
+module.exports = {getAllProfessors, addProfessor};
